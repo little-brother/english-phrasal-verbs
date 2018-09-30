@@ -1,0 +1,82 @@
+* {margin: 0px; padding: 0px;} 
+html,body { padding: 0; margin: 0; font: normal "Helvetica Neue", Helvetica, Arial, sans-serif; height: 100%;}
+
+.page {font-size: 24px;}
+.page:not([current]) {display: none !important;}
+.page .wrapper {margin: auto; position: relative;}
+.page .caption {position: fixed; text-align: center; right: 0; left: 0; color: #fff; background: #aaf; font-weight: bold; padding: 10px; text-transform: uppercase; z-index: 10;}
+.page.center {height: 100%; display: grid; }
+.page.absolute {position: absolute; top: 0; bottom: 0; left: 0; right: 0;}
+
+#page-main {text-align: center;}
+#page-main a {text-decoration: none; color: #000;}
+
+#page-main .wrapper {top: -20px;}
+#page-main .logo::before {content: ' '; padding: 10px; display: inline-block; background-size: contain; background-position: center; background-repeat: no-repeat; background-origin: content-box;}
+#page-main .logo {display: inline-block; margin: 0; font-size: 20px;}
+#page-main #macmillan::before {background-image: url(https://www.macmillandictionary.com/external/images/logoMacmillan.png); width: 240px; height: 80px; margin: 40px 0;}
+#page-main #loading {color: #bbb; padding: 10px 20px; margin-top: 10px; position: relative; left: 10px;} 
+#page-main #button-play {display: none; padding: 10px 20px; margin-top: 10px; text-align: center; cursor: pointer; border-radius: 5px; background: #0f0;}
+
+#page-option .selector {display: block; margin-bottom: 20px;}
+#page-option .selector::before{content: attr(title); display: block; text-align: left; margin-bottom: 5px;}
+#page-option .selector > div {display: inline-block; width: 100px; cursor: pointer; text-align: center; line-height: 28px;  font-size: 16px;}
+#page-option .selector > div[current]::before {content: '\2714'; margin-right: 5px;} 
+#page-option .selector > div[value="yes"] {background: #afa;}
+#page-option .selector > div[value="no"] {background: #faa;}
+#page-option .selector > div[value="3"] {background: #afa;}
+#page-option .selector > div[value="5"] {background: gold;}
+#page-option .selector > div[value="8"] {background: #faa;}
+#page-option .selector > div[value="10"] {background: #afa;}
+#page-option .selector > div[value="20"] {background: gold;}
+#page-option .selector > div[value="30"] {background: #faa;}
+#page-option #verb-voice.selector {display: none;}
+#page-option #verb-voice.selector > div[value = "no"] {background: #faa;}
+#page-option #verb-voice.selector > div {background: #eee;}
+
+#page-game {display: flex; flex-direction: column;}
+#page-game #button-bookmarks {width: 18px; height: 30px; overflow: hidden; background: white; position: relative; display: inline-block; float: left; cursor: pointer; top: 2px; margin-left: 5px;}
+#page-game #button-bookmarks::before {position: absolute; width: 18px; height: 18px; bottom: 0; left: 0; transform: rotate(45deg) translate(35%, 35%); content: ''; background: #aaf;}
+#page-game #button-bookmarks[animation] {animation-duration: 1s; animation-name: animation-bookmarks; animation-iteration-count: 1;}
+@keyframes animation-bookmarks {from {background: gold;} to {background: white;}}
+
+#page-game #wrapper {text-align: center; height: 100%; width: 100%}
+#page-game #score {height: 100px; vertical-align: bottom;}
+#page-game #score::before {content: 'Score: ' attr(score);}
+#page-game #td-main {padding: 20px; height: 100%;}
+#page-game #definition {display: inline-block; position: relative;}
+#page-game #answer {margin-top: 10px;}
+#page-game #answer > span {text-transform: uppercase; font-weight: bold; color: #f00;}
+#page-game #answer > span:not([correct]) {visibility: hidden;}
+#page-game #answer > span[correct = "true"] {color: #090;}
+
+#page-game .list > div {display: inline-block; padding: 5px 15px; margin: 3px; background: #eee; border-radius: 5px; cursor: pointer;}
+#page-game .list > div[current] {background: #aaf !important; color: #fff;} 
+#page-game #verbs > div {background: #ccc;}
+#page-game #preps > div {background: #eee; padding: 5px 10px;}
+#page-game #preps {padding-bottom: 20px; font-size: 20px;}
+
+
+#page-bookmarks #bookmarks {margin-top: 50px; overflow: auto; width: 100%;}
+#page-bookmarks #bookmarks:empty::after {content: 'The list is empty'; padding: 20px; display: inline-block;}
+
+#page-bookmarks #bookmarks > div {padding: 10px 20px; border-bottom: 1px dashed #bbb; position: relative;}
+#page-bookmarks #bookmarks > div #verb {font-weight: bold; display: inline-block;  margin-right: 10px; cursor: pointer; border-bottom: 2px dotted #000;}
+#page-bookmarks #bookmarks > div #synonyms {display: inline;font-size: 16px;}
+#page-bookmarks #bookmarks > div #synonyms:not(:empty)::before {content: '(';}
+#page-bookmarks #bookmarks > div #synonyms:not(:empty)::after {content: ')';}
+#page-bookmarks #bookmarks > div #examples > * {display: block; font-size: 16px; font-style: italic;}
+#page-bookmarks #bookmarks > div #remove {position: absolute; right: 10px; top: 7px; z-index: 1; color: #bbb; cursor: pointer;}
+
+#page-help #content {margin-top: 50px; padding: 20px; overflow: auto;}
+#page-help #content a {text-decoration: none;}
+#page-help #content p {margin-bottom: 20px;}
+#page-help #content ul {margin-left: 30px;}
+
+.button {cursor: pointer; float: right; margin: 0 10px;}
+.close {position: absolute !important; cursor: pointer; transform: rotate(45deg); z-index: 10; top: 2px; right: 2px; margin: 2px 10px;}
+
+.circle {border-radius: 100%; position: relative; display: inline-block; width: 40px; height: 40px;}
+.circle.plus:before, .circle.plus:after {content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #fff;}
+.circle.plus:before {width: 6px; margin: 6px auto;}
+.circle.plus:after {margin: auto 6px; height: 6px;}

@@ -18,6 +18,7 @@ window.addEventListener('load', function() {
 
 	var $score = document.querySelector('#score');
 	var $definition = document.querySelector('#definition');
+	var $synonyms = document.querySelector('#synonyms');
 	var $answer = document.querySelector('#answer');
 	var $verbs = document.querySelector('#verbs');
 	var $preps = document.querySelector('#preps');
@@ -129,9 +130,20 @@ window.addEventListener('load', function() {
 		if (!verb)
 			return alert('Smth wrong!');
 
+		var prev_results = session_results.filter(sres => sres[0] == verb.id);
+		var prev_correct = 0;
+		while(prev_results.length > 0 && prev_results.pop()[1])
+			prev_correct++;
+
 		session_results.push([verb.id, false]);
-		$definition.innerHTML = verb.definition;
+
+		$definition.innerHTML = (prev_correct < 2 || verb.examples.length == 0) ? 
+			verb.definition : 
+			verb.examples[Math.floor(Math.random() * verb.examples.length)].replace(' ' + verb.verb, ' <span id = "verb">' + verb.verb + '</span>').replace(' ' + verb.prep, ' <span id = "prep">' + verb.prep + '</span>');
+
 		$definition.setAttribute('answer', verb.id);
+		$definition.removeAttribute('checked');
+		$synonyms.innerHTML = verb.synonyms.join(', ');
 		$answer.setAttribute('verb', verb.verb);
 		$answer.setAttribute('prep', verb.prep);
 		$answer.innerHTML = '<span>' + verb.verb + '</span> <span>' + verb.prep + '</span>';
@@ -168,19 +180,18 @@ window.addEventListener('load', function() {
 				var is_correct = is_verb && is_prep;
 				session_results[session_results.length - 1][1] = is_correct;
 
+				$definition.setAttribute('checked', true);
 				$answer.children[0].setAttribute('correct', is_verb);
 				$answer.children[1].setAttribute('correct', is_prep);
 
 				var delta = [-3, -1, 5][+ is_verb + is_prep];
 				$score.setAttribute('score', +$score.getAttribute('score') + delta);
 
-				if (is_correct) {
-					var results = session_results.filter(sres => sres[0] == verb.id);
-					if (results.length > 1 && results.pop()[1] && results.pop()[1]) // last two answers were correct
+				if (is_correct && prev_correct > 1)
 						bookmarks.remove(verb.id);
-				} else {
+
+				if (!is_correct)
 					bookmarks.add();
-				}
 
 				if (is_correct && getOption('verb-sound-enable') == 'yes')
 					$audio.play();
@@ -224,14 +235,14 @@ window.addEventListener('load', function() {
 			});
 
 			if ($voices.children.length == 2)
-				$voices.children[1].innerHTML = 'yes';
+				$voices.children[1].innerHTML = 'Yes';
 
-			var width = parseInt(310 / $voices.children.length) - 5;
+			var width = parseInt(315 / $voices.children.length) - 5;
 			for(var i = 0; i < $voices.children.length; i++) {
 				$voices.children[i].style.width = width + 'px';
 				$voices.children[i].addEventListener('click', function (event) {	
 					setOption('verb-voice', this.getAttribute('value'));
-					speakText($answer.getAttribute('verb') + ' '+ $answer.getAttribute('prep'));
+					speakText('Hi there!');
 				});
 			}
 			setOption('verb-voice', localStorage.getItem('verb-voice'));

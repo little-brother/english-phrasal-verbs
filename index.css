@@ -30,6 +30,9 @@ html,body { padding: 0; margin: 0; font: normal "Helvetica Neue", Helvetica, Ari
 #page-option .selector > div[value="10"] {background: #afa;}
 #page-option .selector > div[value="20"] {background: gold;}
 #page-option .selector > div[value="30"] {background: #faa;}
+#page-option .selector.col2 > div {width: 153px;}
+#page-option .selector.col3 > div {width: 100px;}
+
 #page-option #verb-voice.selector {display: none;}
 #page-option #verb-voice.selector > div[value = "no"] {background: #faa;}
 #page-option #verb-voice.selector > div {background: #eee;}
@@ -45,6 +48,14 @@ html,body { padding: 0; margin: 0; font: normal "Helvetica Neue", Helvetica, Ari
 #page-game #score::before {content: 'Score: ' attr(score);}
 #page-game #td-main {padding: 20px; height: 100%;}
 #page-game #definition {display: inline-block; position: relative;}
+#page-game #definition span {display: inline-block; margin: 0 3px 0 7px;}
+#page-game #definition #verb {background: #ccc; min-width: 70px;}
+#page-game #definition #prep {background: #eee; min-width: 40px;}
+#page-game #definition:not([checked]) #verb {color: #ccc;}
+#page-game #definition:not([checked]) #prep {color: #eee;}
+#page-game #synonyms {margin: 10px; font-style: italic; font-size: 20px;}
+#page-game #synonyms:not(:empty)::before {content: '('}
+#page-game #synonyms:not(:empty)::after {content: ')'}
 #page-game #answer {margin-top: 10px;}
 #page-game #answer > span {text-transform: uppercase; font-weight: bold; color: #f00;}
 #page-game #answer > span:not([correct]) {visibility: hidden;}

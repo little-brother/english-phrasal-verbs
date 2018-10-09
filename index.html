@@ -38,6 +38,7 @@
 			<tr><td id = "score" score = "0"></td></tr>
 			<tr><td id = "td-main">
 					<div id = "definition"></div>
+					<div id = "synonyms"></div>
 					<div id = "answer"></div>
 				</td>
 			</tr>
@@ -55,19 +56,19 @@
 		<div class = "caption">Option <div id = "button-option-close" class = "circle plus close" back = "text"></div></div>
 		
 		<div class = "wrapper">
-			<div id = "verb-complexity" class = "selector" title = "Complexity" default = "3">
+			<div id = "verb-complexity" class = "selector col3" title = "Complexity" default = "3">
 				<div value = "3">Easy</div>
 				<div value = "5">Normal</div>
 				<div value = "8">Hard</div>
 			</div>
 
-			<div id = "verb-list-length" class = "selector" title = "List length" default = "10">
+			<div id = "verb-list-length" class = "selector col3" title = "List length" default = "10">
 				<div value = "10">10</div>
 				<div value = "20">20</div>
 				<div value = "30">30</div>
 			</div>
 
-			<div id = "verb-sound-enable" class = "selector" title = "Success ring enable" default = "yes">
+			<div id = "verb-sound-enable" class = "selector col2" title = "Success ring enable" default = "yes">
 				<div value = "no">No</div>
 				<div value = "yes">Yes</div>
 			</div>
@@ -85,8 +86,8 @@
 			<p>
 				This is a application to learn phrasal verbs. The app selects a random phrasal verb, display definition and expects you to construct it correctly from suggested parts. The count of suggestions are defined by <b>Complexity</b>-option.<br>
 				Verbs with errors will be added to bookmarks automatically. 
-				After two correct answers in a session a verb will be removeved from bookmarks.
-				The length of bookmarks list are defined by option.
+				After three correct answers in a session a verb will be removeved from bookmarks.
+				The length of bookmarks list are defined by <b>List length</b>-option.
 				You can add the current verb to bookmarks by click on the definition.
 			</p>
 

@@ -39,7 +39,7 @@ window.addEventListener('load', function() {
 	var $definition = document.querySelector('#definition');
 	var $synonyms = document.querySelector('#synonyms');
 	var $suggestions = document.querySelector('#suggestions');
-	var $example = document.querySelector('#example');
+	var $examples = document.querySelector('#examples');
 
 	var $verbs = document.querySelector('#verbs');
 	var $preps = document.querySelector('#preps');
@@ -65,7 +65,7 @@ window.addEventListener('load', function() {
 				.replace('{verb-prep}', verb.verb_prep)
 				.replace('{definition}', verb.definition)
 				.replace('{synonyms}', verb.synonyms)
-				.replace('{examples}', verb.examples.map(e => '<span>' + parseExample(verb, e) + '</span>').join(''));
+				.replace('{examples}', verb.examples.map(e => '<div>' + parseExample(verb, e) + '</div>').join(''));
 
 			$e.querySelector('#verb-prep').onclick = () => window.open('https://www.macmillandictionary.com/dictionary/british/' + verb.verb_prep.replace(/ /g, '-'));
 			$e.querySelector('#remove').onclick = () => removeVerb(id) || $e.remove(); 
@@ -205,7 +205,7 @@ window.addEventListener('load', function() {
 		$synonyms.innerHTML = is_stage(0, 1, 3, 6, 7) ? verb.synonyms : '';
 		$suggestions.innerHTML = is_stage(2, 5) ? getRandomList('definition', stage == 2 ? 3 : 5) : is_stage(4, 8) ? getRandomList('synonyms', stage == 4 ? 3 : 5) : '';
 		$suggestions.querySelectorAll('div').forEach($e => $e.addEventListener('click', onSuggestionClick));
-		$example.innerHTML = is_stage(0) ? verb.examples.map(e => '<div>' + parseExample(verb, e) + '</div>').join('') : '';
+		$examples.innerHTML = is_stage(0) ? verb.examples.map(e => '<div>' + parseExample(verb, e) + '</div>').join('') : '';
 
 		var len = [0, 3, 0, 5, 0, 0, 8, 8, 0, 8][stage] || 0;
 		$verbs.innerHTML = getRandomList('verb', len);

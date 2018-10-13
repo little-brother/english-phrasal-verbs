@@ -13,7 +13,7 @@
 
 			alert('There are some problems. Use the last version of Google Chrome browser to avoid them.\n\nMinimal supported Android version is 4.1 with Chrome 69.');	
 			window.location.replace('https://www.google.ru/intl/en_uk/chrome/');
-		}, 10000);
+		}, 30000);
 	</script>
 	<script src = "index.js"></script>
 </head>
@@ -23,49 +23,58 @@
 				<div id = "power-by">Powered by</div>
 				<a id = "macmillan" href = "https://www.macmillandictionary.com" class = "logo"></a>
 				<div id = "loading">Loading...</div>
-				<div id = "button-play">Play</div>
+				<div id = "button-play" class = "button">Play</div>
 			</div>
 		</div>	
 	</div>
 
 	<div id = "page-game" class = "page absolute">
 		<div class = "caption">
-			<div id = "button-bookmarks"></div>
-			<div id = "button-help" class = "button">Help</div>	
-			<div id = "button-option" class = "button">Option</div>
+			<div id = "button-verbs"></div>
+			<div id = "button-help" class = "menu-button">Help</div>	
+			<div id = "button-option" class = "menu-button">Option</div>
 		</div>
 		<table id = "wrapper">
-			<tr><td id = "score" score = "0"></td></tr>
-			<tr><td id = "td-main">
-					<div id = "definition"></div>
-					<div id = "synonyms"></div>
+			<tr class = "top">
+				<td>
 					<div id = "answer"></div>
 				</td>
+			</tr>	
+			<tr class = "center">
+				<td>
+					<div id = "definition"></div>
+					<div id = "synonyms"></div>
+					<div id = "suggestions"></div>
+					<div id = "example"></div>
+				</td>
 			</tr>
-			<tr><td id = "verbs" class = "list"></td></tr>
-			<tr><td id = "preps" class = "list"></td></tr>
+			<tr class = "bottom">
+				<td>
+					<div id = "verbs" class = "list"></div>
+					<div id = "preps" class = "list"></div>
+					<div id = "button-block">
+						<div id = "button-verb-skip" class = "button">Skip</div>
+						<div id = "button-verb-add" class = "button">Got it!</div>
+					</div>
+				</td>
+			</tr>
 		</table>	
 	</div>
 
-	<div id = "page-bookmarks" class = "page absolute">
-		<div class = "caption">Bookmarks <div id = "button-bookmarks-close" class = "circle plus close" back = "text"></div></div>
-		<div id = "bookmarks"></div>
+	<div id = "page-verbs" class = "page absolute">
+		<div class = "caption">Current verbs <div id = "button-verbs-close" class = "circle plus close" back = "text"></div></div>
+		<div id = "verbs"></div>
 	</div>
 
 	<div id = "page-option" class = "page center">
 		<div class = "caption">Option <div id = "button-option-close" class = "circle plus close" back = "text"></div></div>
 		
 		<div class = "wrapper">
-			<div id = "verb-complexity" class = "selector col3" title = "Complexity" default = "3">
-				<div value = "3">Easy</div>
-				<div value = "5">Normal</div>
-				<div value = "8">Hard</div>
-			</div>
-
-			<div id = "verb-list-length" class = "selector col3" title = "List length" default = "10">
+			<div id = "verb-list-length" class = "selector col4" title = "List length" default = "10">
 				<div value = "10">10</div>
 				<div value = "20">20</div>
 				<div value = "30">30</div>
+				<div value = "50">50</div>
 			</div>
 
 			<div id = "verb-sound-enable" class = "selector col2" title = "Success ring enable" default = "yes">
@@ -84,15 +93,23 @@
 		
 		<div id = "content">
 			<p>
-				This is a application to learn phrasal verbs. The app selects a random phrasal verb, display definition and expects you to construct it correctly from suggested parts. The count of suggestions are defined by <b>Complexity</b>-option.<br>
-				Verbs with errors will be added to bookmarks automatically. 
-				After three correct answers in a session a verb will be removeved from bookmarks.
-				The length of bookmarks list are defined by <b>List length</b>-option.
-				You can add the current verb to bookmarks by click on the definition.
+				This is a application to learn phrasal verbs. The app selects a random phrasal verb, displays definition and expects you to pass checks.<br>
+				If you fail the check, you'll be returned to previous next time. If all tests are complete, the verb will be removed from the list and a new verb will be suggested.
+				<b>List length</b>-option define how much verbs you're learning.<br>
 			</p>
-
 			<p>
-				The score indicates your progress to persuade you to beat your previous record or to gain a daily limit.
+				<div>Check list for phrasal verb</div>
+				<ul>
+					<li>Combine a answer from 3 verbs and 3 prepositions</li>
+					<li>Select one of 3 definitions by verb</li>
+					<li>Combine a answer from 5 verbs and 5 prepositions</li>
+					<li>Select one of 3 synonyms by verb</li>
+					<li>Select one of 5 definitions by verb</li>
+					<li>Combine a answer from 8 verbs and 8 prepositions</li>
+					<li>Reconstruct the verb in example</li>
+					<li>Select one of 5 synonyms by verb</li>
+					<li>Reconstruct the preposition in example</li>
+				</ul>
 			</p>
 
 			<p>

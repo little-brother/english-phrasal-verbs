@@ -4540,7 +4540,9 @@
       "arboretum",
       "arboriculture"
     ],
-    "examples": []
+    "examples": [
+		"Got a tree you need to chop down, and don’t have or want to use a chainsaw for the task?"
+	]
   },
   {
     "id": 329,
@@ -4613,7 +4615,10 @@
       "barf",
       "bilious"
     ],
-    "examples": []
+    "examples": [
+		"She got ridiculously drunk last night and chucked up in the back of the minicab on the way home.",
+		"Take it easy on the roller coasters or you're going to chuck up your lunch?"
+	]
   },
   {
     "id": 334,
@@ -5339,7 +5344,8 @@
       "savage"
     ],
     "examples": [
-      "She came down pretty hard on the kids for making a mess."
+      "The Commissioner's come down on me.",
+      "I warned him that the fury of the people would come down on him."
     ]
   },
   {
@@ -7949,20 +7955,6 @@
     ]
   },
   {
-    "id": 572,
-    "verb": "dip",
-    "prep": "into",
-    "definition": "to try something new in a very careful way because you are not confident about it",
-    "synonyms": [
-      "strike out",
-      "branch out",
-      "pioneer"
-    ],
-    "examples": [
-      "If you’re not sure rock-climbing is for you, this is a chance to dip your toe in."
-    ]
-  },
-  {
     "id": 573,
     "verb": "dip",
     "prep": "out",
@@ -9032,7 +9024,7 @@
     ],
     "examples": [
       "Why don’t you drop by for coffee some time?",
-      "On the way back, we dropped in on my parents."
+      "You never know who'll drop by."
     ]
   },
   {
@@ -9449,7 +9441,7 @@
     ],
     "examples": [
       "After leaving college, Lucy embarked on an acting career.",
-      "The new government embarked upon an energetic legislative programme."
+      "They are determined to embark on the painful process of reconciliation and national reconstruction."
     ]
   },
   {
@@ -10828,7 +10820,7 @@
     ],
     "examples": [
       "I’m not forking out £400 on ski clothes!",
-      "We immediately forked over the extra money to get faster internet."
+      "But Tess is right, fork out for another pair in black."
     ]
   },
   {
@@ -12234,7 +12226,7 @@
       "invoke"
     ],
     "examples": [
-      "Let’s get on to the next item on our agenda.",
+      "Now, we get onto Peter Jones.",
       "How did we get onto this subject?"
     ]
   },
@@ -15614,7 +15606,7 @@
     "examples": [
       "Melissa had her new dress on.",
       "I couldn’t see properly. I didn’t have my glasses on.",
-      "Of course he was cold – he’d got practically nothing on."
+      "Of course he was cold – he had got practically nothing on."
     ]
   },
   {
@@ -18942,21 +18934,6 @@
     ]
   },
   {
-    "id": 1361,
-    "verb": "level",
-    "prep": "off",
-    "definition": "to stop sloping or moving up or down",
-    "synonyms": [
-      "maintain",
-      "withstand",
-      "stabilize"
-    ],
-    "examples": [
-      "The road levels out as you get close to the village.",
-      "The plane will level off at around 35,000 feet."
-    ]
-  },
-  {
     "id": 1362,
     "verb": "level",
     "prep": "off",
@@ -18967,7 +18944,8 @@
       "stabilize"
     ],
     "examples": [
-      "Oil prices should level out now that the war is over."
+      "It'll be alright when we level off.",
+      "It was hoped that the demand would level off, as the Office had a small staff that was not expected to grow."
     ]
   },
   {
@@ -30254,20 +30232,6 @@
     "examples": []
   },
   {
-    "id": 2170,
-    "verb": "square",
-    "prep": "up to",
-    "definition": "to start to deal with someone or something in a brave and determined way",
-    "synonyms": [
-      "deal with",
-      "tackle",
-      "combat"
-    ],
-    "examples": [
-      "They squared up admirably to a very difficult situation."
-    ]
-  },
-  {
     "id": 2171,
     "verb": "square",
     "prep": "with",
@@ -32210,7 +32174,7 @@
     ],
     "examples": [
       "We stumbled across him in the library.",
-      "A journalist finally stumbled on the truth."
+      "If I stumble across something, I will help out, but I don't go looking for it."
     ]
   },
   {

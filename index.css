@@ -1,5 +1,5 @@
 * {margin: 0px; padding: 0px;} 
-html,body { padding: 0; margin: 0; font: normal "Helvetica Neue", Helvetica, Arial, sans-serif; height: 100%;}
+html,body { padding: 0; margin: 0; height: 100%;}
 
 .page {font-size: 24px;}
 .page:not([current]) {display: none !important;}
@@ -79,11 +79,13 @@ html,body { padding: 0; margin: 0; font: normal "Helvetica Neue", Helvetica, Ari
 #page-game #preps > div {background: #eee; padding: 5px 10px;}
 #page-game #preps {font-size: 20px;}
 #page-game #button-block {display: none;}
-#page-game #button-block .button {width: 65px;}
+#page-game #button-block .button {width: 70px;}
 #page-game #button-block #button-verb-skip {margin-right: 5px; background: #aaf; color: #fff;}
 #page-game[stage="0"] #button-block {display: inline-block;}
-#page-game[stage="8"] #preps {display: none;}
+#page-game[stage="7"] #preps {display: none;}
+#page-game[stage="7"] #definition::first-letter {text-transform: uppercase;}
 #page-game[stage="9"] #verbs {display: none;}
+#page-game[stage="9"] #definition::first-letter {text-transform: uppercase;}
 
 #page-verbs #verbs {margin-top: 50px; overflow: auto; width: 100%;}
 #page-verbs #verbs:empty::after {content: 'The list is empty'; padding: 20px; display: inline-block;}

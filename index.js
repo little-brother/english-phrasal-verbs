@@ -3,10 +3,13 @@ window.addEventListener('load', function() {
 
 	var VERBS = [];
 	var IRVERBS = [];
-	
-	var current_verbs = (localStorage.getItem('verb-current-list') || '').split(',').map(e => parseInt(e)).filter(e => !isNaN(e)).filter((e, i, arr) => arr.indexOf(e) == i);
-	var session_verbs = [];
 
+	var verbs = {
+		current: loadVerbList('current'),
+		learned: loadVerbList('learned'),
+		session: []
+	}
+	
 	var $audio = new Audio('correct.mp3');
 
 	fetch('verbs.json')
@@ -15,17 +18,22 @@ window.addEventListener('load', function() {
 			VERBS = json.filter(e => e.examples.length > 0 && e.synonyms.length > 0);
 			console.log('Load: ' + VERBS.length + ' verbs');
 
-			var verbs = [];
+			var current_verbs = [];
+			var learned_verbs = [];
 			VERBS.forEach(function (v) {
 				v.id = parseInt(v.id);
 				v.verb_prep = v.verb + ' ' + v.prep;
 				v.synonyms = v.synonyms.join(', ');
 				v.ref = ('verb ' + v.verb + ' ' + v.prep).replace(/ /g, '-');
-				if (current_verbs.indexOf(v.id) != -1)
-					verbs.push(v.id);
+
+				if (verbs.current.indexOf(v.id) != -1)
+					current_verbs.push(v.id);
+				if (verbs.learned.indexOf(v.id) != -1)
+					learned_verbs.push(v.id);
 			});
 
-			current_verbs = verbs;	
+			verbs.current = current_verbs;
+			verbs.learned = learned_verbs;
 
 			document.querySelector('#loading').remove();
 			document.querySelector('#button-play').style.display = 'block';	
@@ -55,7 +63,7 @@ window.addEventListener('load', function() {
 		var $verbs = document.querySelector('#page-verbs #verbs');
 		$verbs.innerHTML = '';
 
-		current_verbs.forEach(function (id) {
+		verbs.current.forEach(function (id) {
 			var verb = VERBS.find(v => v.id == id);
 			if (!verb)
 				return;
@@ -68,7 +76,7 @@ window.addEventListener('load', function() {
 				.replace('{examples}', verb.examples.map(e => '<div>' + parseExample(verb, e) + '</div>').join(''));
 
 			$e.querySelector('#verb-prep').onclick = () => window.open('https://www.macmillandictionary.com/dictionary/british/' + verb.verb_prep.replace(/ /g, '-'));
-			$e.querySelector('#remove').onclick = () => removeVerb(id) || $e.remove(); 
+			$e.querySelector('#remove').onclick = () => removeVerb('current', id) || $e.remove(); 
 
 			$verbs.appendChild($e);
 		})
@@ -81,7 +89,7 @@ window.addEventListener('load', function() {
 		var id = $answer.getAttribute('verb-id');
 		var verb = VERBS.find(v => v.id == id);
 		localStorage.setItem(verb.ref, 1);
-		addVerb(verb.id);
+		addVerb('current', verb.id);
 
 		setVerb();
 	});
@@ -91,21 +99,27 @@ window.addEventListener('load', function() {
 			speakText($answer.textContent);
 	});
 
-	function addVerb (id) {
+	function loadVerbList (type) {
+		return (localStorage.getItem('verb-' + type + '-list') || '')
+			.split(',').map(e => parseInt(e)).filter(e => !isNaN(e))
+			.filter((e, i, arr) => arr.indexOf(e) == i)
+	}
+
+	function addVerb (type, id) {
 		id = parseInt(id);
-		if (current_verbs.indexOf(id) != -1)
+		if (verbs[type].indexOf(id) != -1)
 			return;
  
-		current_verbs.push(id);
-		localStorage.setItem('verb-current-list', current_verbs.join(','));
+		verbs[type].push(id);
+		localStorage.setItem('verb-' + type + '-list', verbs[type].join(','));
+	}
+	
+	function removeVerb (type, id) {
+		verbs[type] = verbs[type].filter(v => v != id);
+		localStorage.setItem('verb-' + type + '-list', verbs[type].join(','));	
 	}
 
-	function removeVerb(id) {
-		current_verbs = current_verbs.filter(v => v != id);
-		localStorage.setItem('verb-current-list', current_verbs.join(','));	
-	}
-
-	['verb-list-length', 'verb-sound-enable'].forEach(function (opt) {
+	['verb-list-length', 'verb-sound-enable', 'verb-check-learned'].forEach(function (opt) {
 		var $e = document.querySelector('#' + opt);
 		for(var i = 0; i < $e.children.length; i++)
 			$e.children[i].addEventListener('click', (event) => setOption(opt, event.target.getAttribute('value')));
@@ -129,33 +143,38 @@ window.addEventListener('load', function() {
 	}
 
 	function setVerb(verb) {
-		var verb, verb_no, exclude_verbs;
+		var verb, verb_no, exclude_verbs, stage;
 		var list_length = getOption('verb-list-length') || 10;	
 
-		if (current_verbs.length < list_length) {
-			exclude_verbs = VERBS.filter(v => current_verbs.indexOf(v.id) != -1).map(v => v.verb_prep);
+		if (verbs.current.length < list_length) {
+			exclude_verbs = VERBS.filter(v => verbs.current.indexOf(v.id) != -1).map(v => v.verb_prep);
 			do {
 				verb_no = Math.floor(Math.random() * VERBS.length);
 				verb = VERBS[verb_no];
-			} while (session_verbs.indexOf(verb.id) != -1 || current_verbs.indexOf(verb.id) != -1 || exclude_verbs.indexOf(verb.verb_prep) != -1)	
+			} while (verbs.session.indexOf(verb.id) != -1 || verbs.current.indexOf(verb.id) != -1 || exclude_verbs.indexOf(verb.verb_prep) != -1)	
 			localStorage.removeItem(verb && verb.ref);
+			stage = 0;	
+		} else if (getOption('verb-check-learned') == 'yes' && verbs.current.length < list_length * 1.5 && Math.random > 0.9) {
+			verb_no = Math.floor(Math.random() * verbs.learned.length);
+			verb = VERBS.find(v => v.id = verb_no);
+			stage = 7 + Math.floor(Math.random() * 3);
 		} else {
-			exclude_verbs = session_verbs.slice(-Math.floor(list_length * 0.7));
-			var possible_verbs = current_verbs.filter(id => exclude_verbs.indexOf(id) == -1);
+			exclude_verbs = verbs.session.slice(-Math.floor(list_length * 0.7));
+			var possible_verbs = verbs.current.filter(id => exclude_verbs.indexOf(id) == -1);
 			verb_no = Math.floor(Math.random() * possible_verbs.length);
 			verb = VERBS.find(v => v.id == possible_verbs[verb_no]);
+			stage = Math.max(parseInt(localStorage.getItem(verb.ref)) || 0, 0);
 		}
 
 		if (!verb)
 			return alert('Smth wrong!');
 
-		var stage = Math.max(parseInt(localStorage.getItem(verb.ref)) || 0, 0);
 		document.querySelector('#page-game').setAttribute('stage', stage);
 
 		if (stage > 9) 
-			return removeVerb(verb.id) || setVerb();
+			return removeVerb(verb.id, 'current') || setVerb();
 
-		session_verbs.push(verb.id);
+		verbs.session.push(verb.id);
 
 		/*
 			Stages:
@@ -186,7 +205,7 @@ window.addEventListener('load', function() {
 				'synonyms': []
 			}
 
-			return current_verbs.map(id => VERBS.find(v => v.id == id)[prop]).concat(addon[prop])
+			return verbs.current.map(id => VERBS.find(v => v.id == id)[prop]).concat(addon[prop])
 				.filter((e, i, arr) => arr.indexOf(e) === i && e != verb[prop]).shuffle().slice(0, length - 1)
 				.concat(verb[prop]).shuffle().map(v => '<div>' + v + '</div>').join('');
 		}
@@ -216,12 +235,18 @@ window.addEventListener('load', function() {
 			speakText(verb.verb_prep);	
 
 		function onSuggestionClick () {
+			if (this.hasAttribute('correct'))
+				return;
+
 			var is_correct = is_stage(2, 5) ? this.textContent.trim() == verb.definition.trim() : this.textContent.trim() == verb.synonyms;
 			this.setAttribute('correct', is_correct);
 			next(is_correct);
 		}
 
 		function onVerbPrepClick () {
+			if (!!$answer.querySelector('div[correct]'))
+				return;
+
 			var $parent = this.parentNode;
 			for(var i = 0; i < $parent.children.length; i++)
 				$parent.children[i].removeAttribute('current');
@@ -253,8 +278,15 @@ window.addEventListener('load', function() {
 		function next(is_correct) {
 			localStorage.setItem(verb.ref, Math.max(stage + (is_correct ? 1 : -1), 1));
 
-			if (is_correct && stage == 9)  
-				removeVerb(verb.id);
+			if (!is_correct) {
+				addVerb('current', verb.id);
+				removeVerb('learned', verb.id);
+			}
+
+			if (is_correct && stage == 9) {  
+				removeVerb('current', verb.id);
+				addVerb('learned', verb.id);
+			}
 
 			if (is_correct && getOption('verb-sound-enable') == 'yes')
 				$audio.play();

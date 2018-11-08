@@ -10,12 +10,11 @@ window.addEventListener('load', function() {
 		session: []
 	}
 	
-	var $audio = new Audio('correct.mp3');
+	var $success = new Audio('correct.mp3');
 
-	fetch('verbs.json')
-		.then(response => response.json())
-		.then(function (json) {
-			VERBS = json.filter(e => e.examples.length > 0 && e.synonyms.length > 0);
+	Promise.all(['verbs.json', 'irverbs.json'].map(f => fetch(f).then(res => res.json())))
+		.then(function (res) {
+			VERBS = res[0].filter(e => e.examples.length > 0 && e.synonyms.length > 0);
 			console.log('Load: ' + VERBS.length + ' verbs');
 
 			var current_verbs = [];
@@ -35,32 +34,29 @@ window.addEventListener('load', function() {
 			verbs.current = current_verbs;
 			verbs.learned = learned_verbs;
 
-			document.querySelector('#loading').remove();
-			document.querySelector('#button-play').style.display = 'block';	
+			IRVERBS = res[1];
+			
+			$('#page-start #loading').remove();
+			initOptions();
 		});
 
-	fetch('irverbs.json')
-		.then(response => response.json())
-		.then(json => IRVERBS = json);
+	var $answer = $('#page-main #answer');
+	var $definition = $('#page-main #definition');
+	var $synonyms = $('#page-main #synonyms');
+	var $suggestions = $('#page-main #suggestions');
+	var $examples = $('#page-main #examples');
 
-	var $answer = document.querySelector('#answer');
-	var $definition = document.querySelector('#definition');
-	var $synonyms = document.querySelector('#synonyms');
-	var $suggestions = document.querySelector('#suggestions');
-	var $examples = document.querySelector('#examples');
+	var $verbs = $('#page-main #verbs');
+	var $preps = $('#page-main #preps');
 
-	var $verbs = document.querySelector('#verbs');
-	var $preps = document.querySelector('#preps');
+	$('#page-start #button-start').addEventListener('click', () => setPage('main') || setVerb());
+	$('#page-main #button-help').addEventListener('click', () => setPage('help'));
+	$('#page-main #button-option').addEventListener('click', () => setPage('option'));
+	$('#page-option #verb-sound-enable [value="yes"]').addEventListener('click', () => $success.play());
+	$('.close', $e => $e.addEventListener('click', () => setPage($e.getAttribute('back'))));
 
-	document.querySelector('#button-play').addEventListener('click', () => setPage('game') || setVerb());
-	document.querySelector('#button-help').addEventListener('click', () => setPage('help'));
-	document.querySelector('#button-help-close').addEventListener('click', () => setPage('game'));
-	document.querySelector('#button-option').addEventListener('click', () => setPage('option'));
-	document.querySelector('#button-option-close').addEventListener('click', () => setPage('game'));
-	document.querySelector('#verb-sound-enable [value="yes"]').addEventListener('click', () => $audio.play());
-
-	document.querySelector('#button-verbs').addEventListener('click', function () {
-		var $verbs = document.querySelector('#page-verbs #verbs');
+	$('#page-main #button-verbs').addEventListener('click', function () {
+		var $verbs = $('#page-verbs #verbs');
 		$verbs.innerHTML = '';
 
 		verbs.current.forEach(function (id) {
@@ -82,10 +78,9 @@ window.addEventListener('load', function() {
 		})
 		setPage('verbs');
 	});
-	document.querySelector('#button-verbs-close').addEventListener('click', () => setPage('game'));
 
-	document.querySelector('#button-verb-skip').addEventListener('click', setVerb);
-	document.querySelector('#button-verb-add').addEventListener('click', function () {
+	$('#page-main #button-verb-skip').addEventListener('click', setVerb);
+	$('#page-main #button-verb-add').addEventListener('click', function () {
 		var id = $answer.getAttribute('verb-id');
 		var verb = VERBS.find(v => v.id == id);
 		localStorage.setItem(verb.ref, 1);
@@ -119,15 +114,18 @@ window.addEventListener('load', function() {
 		localStorage.setItem('verb-' + type + '-list', verbs[type].join(','));	
 	}
 
-	['verb-list-length', 'verb-sound-enable', 'verb-check-learned'].forEach(function (opt) {
-		var $e = document.querySelector('#' + opt);
-		for(var i = 0; i < $e.children.length; i++)
-			$e.children[i].addEventListener('click', (event) => setOption(opt, event.target.getAttribute('value')));
-		setOption(opt, localStorage.getItem(opt));
-	});
+	function initOptions() {
+		$('#page-option .content > div', function ($opt) {	
+			var opt = $opt.id;
+			var $e = $('#' + opt);
+			for(var i = 0; i < $e.children.length; i++)
+				$e.children[i].addEventListener('click', (event) => setOption(opt, event.target.getAttribute('value')));
+			setOption(opt, localStorage.getItem(opt));
+		});
+	}
 
 	function setOption(opt, value) {
-		var $e = document.querySelector('#' + opt);
+		var $e = $('#' + opt);
 		var def = $e.getAttribute('default');
 		localStorage.setItem(opt, value || def);
 		for(var i = 0; i < $e.children.length; i++)
@@ -138,8 +136,8 @@ window.addEventListener('load', function() {
 	}
 
 	function getOption(opt) {
-		var $e = document.querySelector('#' + opt + ' [current]');
-		return $e ? $e.getAttribute('value') : document.querySelector('#' + opt).getAttribute('default');
+		var $e = $('#' + opt + ' [current]');
+		return $e ? $e.getAttribute('value') : $('#' + opt).getAttribute('default');
 	}
 
 	function setVerb(verb) {
@@ -153,8 +151,8 @@ window.addEventListener('load', function() {
 				verb = VERBS[verb_no];
 			} while (verbs.session.indexOf(verb.id) != -1 || verbs.current.indexOf(verb.id) != -1 || exclude_verbs.indexOf(verb.verb_prep) != -1)	
 			localStorage.removeItem(verb && verb.ref);
-			stage = 0;	
-		} else if (getOption('verb-check-learned') == 'yes' && verbs.current.length < list_length * 1.5 && Math.random > 0.9) {
+			stage = 0;
+		} else if (getOption('verb-check-learned') == 'yes' && verbs.current.length < list_length * 1.5 && Math.random() > 0.9 && verbs.learned.length) {
 			verb_no = Math.floor(Math.random() * verbs.learned.length);
 			verb = VERBS.find(v => v.id = verb_no);
 			stage = 7 + Math.floor(Math.random() * 3);
@@ -166,10 +164,10 @@ window.addEventListener('load', function() {
 			stage = Math.max(parseInt(localStorage.getItem(verb.ref)) || 0, 0);
 		}
 
-		if (!verb)
+		if (!verb) 
 			return alert('Smth wrong!');
 
-		document.querySelector('#page-game').setAttribute('stage', stage);
+		$('#page-main').setAttribute('stage', stage);
 
 		if (stage > 9) 
 			return removeVerb(verb.id, 'current') || setVerb();
@@ -229,7 +227,7 @@ window.addEventListener('load', function() {
 		var len = [0, 3, 0, 5, 0, 0, 8, 8, 0, 8][stage] || 0;
 		$verbs.innerHTML = getRandomList('verb', len);
 		$preps.innerHTML = getRandomList('prep', len);
-		document.querySelectorAll('.list div').forEach($e => $e.addEventListener('click', onVerbPrepClick));
+		$('.list div', $e => $e.addEventListener('click', onVerbPrepClick));
 
 		if (is_stage(0, 2, 4, 5, 8))
 			speakText(verb.verb_prep);	
@@ -289,7 +287,7 @@ window.addEventListener('load', function() {
 			}
 
 			if (is_correct && getOption('verb-sound-enable') == 'yes')
-				$audio.play();
+				$success.play();
 
 			setTimeout(() => document.dispatchEvent(new CustomEvent('speak-text', {detail: verb.verb_prep})), 500);
 			setTimeout(setVerb, 2000);					
@@ -343,7 +341,7 @@ window.addEventListener('load', function() {
 		});
 
 		function loadVoices () {
-			var $voices = document.querySelector('#verb-voice');
+			var $voices = $('#verb-voice');
 			voices = speechSynthesis.getVoices();
 
 			if ($voices.children.length > 1 || voices.length == 0)
@@ -379,22 +377,26 @@ window.addEventListener('load', function() {
 	}
 
 	function setPage(page) {
-		document.querySelectorAll('.page').forEach($e => $e.removeAttribute('current'));
-		document.querySelector('#page-' + page).setAttribute('current', true);
+		$('.page', $e => $e.removeAttribute('current'));
+		$('#page-' + page).setAttribute('current', true);
 	}
 
 	history.pushState({}, '', window.location.pathname);
 	window.addEventListener('popstate', function(event) {
-		var page = document.querySelector('.page[current]');
-		if (page.id == 'page-main')
+		var page = $('.page[current]');
+		if (page.id == 'page-start')
 			return history.back();
 
 		history.pushState(null, null, window.location.pathname);
-		if (page.id == 'page-game')
-			return setPage('main');
+		if (page.id == 'page-main')
+			return setPage('start');
 
 		page.querySelector('.close').click();
 	}, false);
+
+	function $ (selector, apply) {
+		return apply ? Array.prototype.slice.call(document.querySelectorAll(selector) || []).forEach(apply) : document.querySelector(selector);
+	}
 
 	Array.prototype.shuffle = function () {
 		var array = this.slice();	

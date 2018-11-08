@@ -12,64 +12,75 @@
 				return;
 
 			alert('There are some problems. Use the last version of Google Chrome browser to avoid them.\n\nMinimal supported Android version is 4.1 with Chrome 69.');	
-			window.location.replace('https://www.google.ru/intl/en_uk/chrome/');
 		}, 30000);
 	</script>
 	<script src = "index.js"></script>
 </head>
 <body>
-	<div id = "page-main" class = "page center" current>
-			<div class = "wrapper">
+	<div id = "page-start" class = "page center" current>
+			<div class = "content">
 				<div id = "power-by">Powered by</div>
-				<a id = "macmillan" href = "https://www.macmillandictionary.com" class = "logo"></a>
+				<a id = "logo" href = "https://www.macmillandictionary.com" class = "logo"></a>
 				<div id = "loading">Loading...</div>
-				<div id = "button-play" class = "button">Play</div>
+				<div id = "button-start" class = "button">Start</div>
 			</div>
 		</div>	
 	</div>
 
-	<div id = "page-game" class = "page absolute">
+	<div id = "page-main" class = "page absolute">
 		<div class = "caption">
 			<div id = "button-verbs"></div>
-			<div id = "button-help" class = "menu-button">Help</div>	
-			<div id = "button-option" class = "menu-button">Option</div>
+			<div id = "button-help" class = "caption-button">Help</div>	
+			<div id = "button-option" class = "caption-button">Option</div>
 		</div>
-		<table id = "wrapper">
-			<tr class = "top">
-				<td>
-					<div id = "answer"></div>
-				</td>
-			</tr>	
-			<tr class = "center">
-				<td>
-					<div id = "definition"></div>
-					<div id = "synonyms"></div>
-					<div id = "suggestions"></div>
-					<div id = "examples"></div>
-				</td>
-			</tr>
-			<tr class = "bottom">
-				<td>
-					<div id = "verbs" class = "list"></div>
-					<div id = "preps" class = "list"></div>
-					<div id = "button-block">
-						<div id = "button-verb-skip" class = "button">Skip</div>
-						<div id = "button-verb-add" class = "button">Got it!</div>
-					</div>
-				</td>
-			</tr>
-		</table>	
+		
+		<div class = "content">
+			<table id = "wrapper">
+				<tr class = "top">
+					<td>
+						<div id = "answer"></div>
+					</td>
+				</tr>	
+				<tr class = "center">
+					<td>
+						<div id = "definition"></div>
+						<div id = "synonyms"></div>
+						<div id = "suggestions"></div>
+						<div id = "examples"></div>
+					</td>
+				</tr>
+				<tr class = "bottom">
+					<td>
+						<div id = "verbs" class = "list"></div>
+						<div id = "preps" class = "list"></div>
+						<div id = "button-block">
+							<div id = "button-verb-skip" class = "button">Skip</div>
+							<div id = "button-verb-add" class = "button">Got it!</div>
+						</div>
+					</td>
+				</tr>
+			</table>	
+		</div>
 	</div>
 
 	<div id = "page-verbs" class = "page absolute">
-		<div class = "caption">Current verbs <div id = "button-verbs-close" class = "circle plus close" back = "text"></div></div>
-		<div id = "verbs"></div>
+		<div class = "caption">
+			<div>Current verbs</div>
+			<div class = "close" back = "main"></div>
+		</div>
+		
+		<div class = "content">	
+			<div id = "verbs"></div>
+		</div>
 	</div>
 
 	<div id = "page-option" class = "page center">
-		<div class = "caption">Option <div id = "button-option-close" class = "circle plus close" back = "text"></div></div>
+		<div class = "caption">
+			<div>Option</div>
+			<div id = "button-option-close" class = "close" back = "main"></div>
+		</div>
 		
-		<div class = "wrapper">
+		<div class = "content">
 			<div id = "verb-list-length" class = "selector col4" title = "List length" default = "10">
 				<div value = "10">10</div>
 				<div value = "20">20</div>
@@ -94,11 +105,14 @@
 	</div>
 
 	<div id = "page-help" class = "page absolute">
-		<div class = "caption">Help <div id = "button-help-close" class = "circle plus close" back = "text"></div></div>
+		<div class = "caption">
+			<div>Help</div>
+			<div class = "close" back = "main"></div>
+		</div>
 		
-		<div id = "content">
+		<div class = "content content-padding">
 			<p>
-				This is a application to learn phrasal verbs. The app selects a random phrasal verb, displays definition and expects you to pass checks.<br>
+				This is an application to learn phrasal verbs. The app selects a random phrasal verb, displays definition and expects you to pass checks.<br>
 				If you fail the check, you'll be returned to previous check next time. If all tests are completed, the verb will be removed from the list and a new verb will be suggested.<br>
 			</p>
 
@@ -120,12 +134,6 @@
 			<p>
 				<b>List length</b>-option defines how much verbs you're learning at once.<br>
 				<b>Check learned verbs</b>-option controls random checks of learned verbs.
-			</p>
-
-			<p>
-				If app don't work properly, e.g. you don't listen any sound or you see permanent "Loading..." instead "Play"-button on first screen, it's means that your browser is obsolete.
-				Use <a href = "https://www.google.ru/intl/en_uk/chrome/"><b>Chrome</b></a> to avoid troubles.</br>
-				Minimal supported Android version is 4.1 with Chrome 69.
 			</p>
 
 			<p>	

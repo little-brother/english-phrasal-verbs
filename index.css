@@ -1,22 +1,27 @@
-* {margin: 0px; padding: 0px;} 
-html,body { padding: 0; margin: 0; height: 100%;}
+* {margin: 0; padding: 0;} 
+html, body { padding: 0; margin: 0; height: 100%;}
 
 .page {font-size: 24px;}
 .page:not([current]) {display: none !important;}
-.page .wrapper {margin: auto; position: relative;}
-.page .caption {position: fixed; text-align: center; right: 0; left: 0; color: #fff; background: #aaf; font-weight: bold; padding: 10px; text-transform: uppercase; z-index: 10;}
 .page.center {height: 100%; display: grid; }
+.page.center  .content {margin: auto; position: relative;}
 .page.absolute {position: absolute; top: 0; bottom: 0; left: 0; right: 0;}
+.page.absolute .content {margin: auto; position: absolute; top: 48px; right: 0; left: 0; bottom: 0; overflow: auto;}
 
-#page-main {text-align: center;}
-#page-main a {text-decoration: none; color: #000;}
+.page .caption {position: fixed; text-align: center; right: 0; left: 0; color: #fff; background: #aaf; font-weight: bold; padding: 10px; text-transform: uppercase; z-index: 10;}
+.page .caption > * {display: inline-block;}
+.page .caption .left {float: left; cursor: pointer;}
 
-#page-main .wrapper {top: -20px;}
-#page-main .logo::before {content: ' '; padding: 10px; display: inline-block; background-size: contain; background-position: center; background-repeat: no-repeat; background-origin: content-box;}
-#page-main .logo {display: inline-block; margin: 0; font-size: 20px;}
-#page-main #macmillan::before {background-image: url(https://www.macmillandictionary.com/external/images/logoMacmillan.png); width: 240px; height: 80px; margin: 40px 0;}
-#page-main #loading {color: #bbb; padding: 10px 20px; margin-top: 10px; position: relative; left: 10px;} 
-#page-main #button-play {display: none; margin-top: 10px; }
+.page .content-padding {padding: 20px;}
+
+#examples > div::first-letter {text-transform: uppercase;}
+
+#page-start {text-align: center;}
+#page-start a {text-decoration: none; color: #000;}
+#page-start #logo {display: block; margin: 0; font-size: 20px;}
+#page-start #logo::before {content: ' '; padding: 10px; display: block; background-size: contain; background-position: center; background-repeat: no-repeat; background-origin: content-box; background-image: url(https://www.macmillandictionary.com/external/images/logoMacmillan.png); width: 240px; height: 80px; margin: 40px 0;}
+#page-start #loading {color: #bbb; padding: 10px 20px; margin-top: 10px; position: relative; left: 10px;} 
+#page-start #loading ~ #button-start {display: none !important;}
 
 #page-option .selector {display: block; margin-bottom: 20px;}
 #page-option .selector::before{content: attr(title); display: block; text-align: left; margin-bottom: 5px;}
@@ -31,65 +36,66 @@ html,body { padding: 0; margin: 0; height: 100%;}
 #page-option .selector > div[value="20"] {background: gold;}
 #page-option .selector > div[value="30"] {background: #faa;}
 #page-option .selector > div[value="50"] {background: #aaf;}
+#page-option .selector.col1 > div {width: 310px;}
 #page-option .selector.col2 > div {width: 153px;}
 #page-option .selector.col3 > div {width: 100px;}
 #page-option .selector.col4 > div {width: 73px;}
+#page-option .selector.col5 > div {width: 57px;}
+#page-option .selector.col6 > div {width: 47px;}
 
 #page-option #verb-voice.selector {display: none;}
 #page-option #verb-voice.selector > div[value = "no"] {background: #faa;}
 #page-option #verb-voice.selector > div {background: #eee;}
 
-#page-game {display: flex; flex-direction: column;}
-#page-game #button-verbs {display: inline-block; float: left; cursor: pointer; margin-left: 5px; position: relative; height: 28px; width: 30px; top: 1px;}
-#page-game #button-verbs::before {content: ""; position: absolute; left: 0; width: 30px; height: 5px; background: #fff; box-shadow: 0 10px 0 0 #fff, 0 20px 0 0 #fff;}
-#page-game #button-verbs[animation] {animation-duration: 1s; animation-name: animation-verbs; animation-iteration-count: 1;}
+#page-main {display: flex; flex-direction: column;}
+#page-main #button-verbs {display: inline-block; float: left; cursor: pointer; margin-left: 5px; position: relative; height: 28px; width: 30px; top: 1px;}
+#page-main #button-verbs::before {content: ""; position: absolute; left: 0; width: 30px; height: 5px; background: #fff; box-shadow: 0 10px 0 0 #fff, 0 20px 0 0 #fff;}
+#page-main #button-verbs[animation] {animation-duration: 1s; animation-name: animation-verbs; animation-iteration-count: 1;}
 @keyframes animation-verbs {from {background: gold;} to {background: white;}}
 
-#page-game #wrapper {text-align: center; height: 100%; width: 100%;}
-#page-game tr.top td {height: 100px; vertical-align: bottom;}
-#page-game tr.center td {height: 100%; padding: 0 10px;}
-#page-game tr.bottom td {padding-bottom: 10px;}
-#page-game #definition {display: inline-block; position: relative;}
-#page-game #definition span {display: inline-block; margin: 0 3px 0 7px; background: #ccc; color: #ccc;}
-#page-game #definition #verb {min-width: 70px;}
-#page-game #definition #prep {min-width: 40px;}
-#page-game #definition span[correct = "true"] {color: #090; background: #fff;}
-#page-game #definition span[correct = "false"] {color: #f00; background: #fff;}
-#page-game #synonyms {font-size: 16px; padding: 0 0 10px 0;}
-#page-game #synonyms:empty {display: none;}
-#page-game #synonyms::before {content: '~'; margin-right: 5px;}
-#page-game #synonyms::after {content: '~'; margin-left: 5px;}
-#page-game #suggestions div {margin: 10px 0; border: 1px dashed #bbb; font-size: 20px; padding: 10px; border-radius: 5px; background: #fafafa; cursor: pointer;}
-#page-game #suggestions div:not([correct]):hover {background: #eef;}
-#page-game #suggestions div[correct = "true"] {background: #afa;}
-#page-game #suggestions div[correct = "false"] {background: #faa;}
-#page-game #examples {margin: 10px; font-style: italic; font-size: 20px;} 
-#page-game #examples > div {margin-bottom: 10px;}
-#page-game #examples span[verb] {color: blue;}
-#page-game #examples span[prep] {color: blue;}
+#page-main #wrapper {text-align: center; height: 100%; width: 100%;}
+#page-main tr.top td {height: 100px; vertical-align: bottom;}
+#page-main tr.center td {height: 100%; padding: 0 10px;}
+#page-main tr.bottom td {padding-bottom: 10px;}
+#page-main #definition {display: inline-block; position: relative;}
+#page-main #definition span {display: inline-block; margin: 0 3px 0 7px; background: #ccc; color: #ccc;}
+#page-main #definition #verb {min-width: 70px;}
+#page-main #definition #prep {min-width: 40px;}
+#page-main #definition span[correct = "true"] {color: #090; background: #fff;}
+#page-main #definition span[correct = "false"] {color: #f00; background: #fff;}
+#page-main #synonyms {font-size: 16px; padding: 0 0 10px 0;}
+#page-main #synonyms:empty {display: none;}
+#page-main #synonyms::before {content: '~'; margin-right: 5px;}
+#page-main #synonyms::after {content: '~'; margin-left: 5px;}
+#page-main #suggestions div {margin: 10px 0; border: 1px dashed #bbb; font-size: 20px; padding: 10px; border-radius: 5px; background: #fafafa; cursor: pointer;}
+#page-main #suggestions div:not([correct]):hover {background: #eef;}
+#page-main #suggestions div[correct = "true"] {background: #afa;}
+#page-main #suggestions div[correct = "false"] {background: #faa;}
+#page-main #examples {margin: 10px; font-style: italic; font-size: 20px;} 
+#page-main #examples > div {margin-bottom: 10px;}
+#page-main #examples span[verb] {color: blue;}
+#page-main #examples span[prep] {color: blue;}
 
-#page-game #answer {margin-top: 10px; text-transform: uppercase; font-weight: bold;}
-#page-game #answer > span:not([correct]) {visibility: hidden;}
-#page-game #answer > span[correct = "true"] {color: #090;}
-#page-game #answer > span[correct = "false"] {color: #f00;}
+#page-main #answer {margin-top: 10px; text-transform: uppercase; font-weight: bold;}
+#page-main #answer > span:not([correct]) {visibility: hidden;}
+#page-main #answer > span[correct = "true"] {color: #090;}
+#page-main #answer > span[correct = "false"] {color: #f00;}
 
-#page-game .list > div {display: inline-block; padding: 5px 15px; margin: 3px; background: #eee; border-radius: 5px; cursor: pointer;}
-#page-game .list > div[current] {background: #aaf !important; color: #fff;} 
-#page-game #verbs > div {background: #ccc;}
-#page-game #preps > div {background: #eee; padding: 5px 10px;}
-#page-game #preps {font-size: 20px;}
-#page-game #button-block {display: none;}
-#page-game #button-block .button {width: 70px;}
-#page-game #button-block #button-verb-skip {margin-right: 5px; background: #aaf; color: #fff;}
-#page-game[stage="0"] #button-block {display: inline-block;}
-#page-game[stage="7"] #preps {display: none;}
-#page-game[stage="7"] #definition::first-letter {text-transform: uppercase;}
-#page-game[stage="9"] #verbs {display: none;}
-#page-game[stage="9"] #definition::first-letter {text-transform: uppercase;}
+#page-main .list > div {display: inline-block; padding: 5px 15px; margin: 3px; background: #eee; border-radius: 5px; cursor: pointer;}
+#page-main .list > div[current] {background: #aaf !important; color: #fff;} 
+#page-main #verbs > div {background: #ccc;}
+#page-main #preps > div {background: #eee; padding: 5px 10px;}
+#page-main #preps {font-size: 20px;}
+#page-main #button-block {display: none;}
+#page-main #button-block .button {width: 70px;}
+#page-main #button-block #button-verb-skip {margin-right: 5px; background: #aaf; color: #fff;}
+#page-main[stage="0"] #button-block {display: inline-block;}
+#page-main[stage="7"] #preps {display: none;}
+#page-main[stage="7"] #definition::first-letter {text-transform: uppercase;}
+#page-main[stage="9"] #verbs {display: none;}
+#page-main[stage="9"] #definition::first-letter {text-transform: uppercase;}
 
-#page-verbs #verbs {margin-top: 50px; overflow: auto; width: 100%;}
 #page-verbs #verbs:empty::after {content: 'The list is empty'; padding: 20px; display: inline-block;}
-
 #page-verbs #verbs > div {padding: 10px 20px; border-bottom: 1px dashed #bbb; position: relative;}
 #page-verbs #verbs > div #verb-prep {font-weight: bold; display: inline-block;  margin-right: 10px; cursor: pointer; border-bottom: 2px dotted #000;}
 #page-verbs #verbs > div #synonyms {display: inline;font-size: 16px;}
@@ -101,18 +107,13 @@ html,body { padding: 0; margin: 0; height: 100%;}
 #page-verbs #verbs > div #examples #prep {color: blue;}
 #page-verbs #verbs > div #remove {position: absolute; right: 10px; top: 7px; z-index: 1; color: #bbb; cursor: pointer;}
 
-#page-help #content {margin-top: 50px; padding: 20px; overflow: auto;}
-#page-help #content a {text-decoration: none;}
-#page-help #content p {margin-bottom: 20px;}
-#page-help #content ul {margin-left: 30px;}
-
-#examples > div::first-letter {text-transform: uppercase;}
+#page-help .content p {margin-bottom: 20px;}
+#page-help .content a {text-decoration: none;}
+#page-help .content ul {margin-left: 30px;}
 
 .button {padding: 10px 30px; text-align: center; cursor: pointer; border-radius: 5px; background: #0f0; display: inline-block;}
-.menu-button {cursor: pointer; float: right; margin: 0 10px;}
-.close {position: absolute !important; cursor: pointer; transform: rotate(45deg); z-index: 10; top: 2px; right: 2px; margin: 2px 10px;}
-
-.circle {border-radius: 100%; position: relative; display: inline-block; width: 40px; height: 40px;}
-.circle.plus:before, .circle.plus:after {content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #fff;}
-.circle.plus:before {width: 6px; margin: 6px auto;}
-.circle.plus:after {margin: auto 6px; height: 6px;}
+.caption-button {cursor: pointer; float: right; margin: 0 10px;}
+.close {position: absolute !important; cursor: pointer; transform: rotate(45deg); z-index: 10; border-radius: 100%; top: 2px; right: 2px; margin: 2px 10px; display: inline-block; width: 40px; height: 40px;}
+.close::before, .close::after {content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #fff;}
+.close::before {width: 6px; margin: 6px auto;}
+.close::after {margin: auto 6px; height: 6px;}
